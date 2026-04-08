@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poruke i obavijesti</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container messages-container">
+        <h1>Poruke i obavijesti</h1>
+
+        <h2>Tko te lajkao</h2>
+        <div id="likesNotifications"></div>
+
+        <hr>
+
+        <h2>Razgovori</h2>
+        <div id="conversationList"></div>
+
+        <hr>
+
+        <h2>Razgovor</h2>
+        <div id="chatWith"></div>
+        <div id="chatMessages"></div>
+
+        <form id="messageForm">
+            <input type="text" id="messageInput" placeholder="Upiši poruku...">
+            <button type="submit">Pošalji</button>
+        </form>
+
+        <hr>
+
+        <h3>Dogovor za šetnju</h3>
+
+        <form id="walkForm">
+            <input type="text" id="mjesto" placeholder="Mjesto susreta">
+            <input type="text" id="ruta" placeholder="Ruta za šetnju">
+            <input type="date" id="datum">
+            <input type="time" id="vrijeme">
+            <button type="submit">Pošalji prijedlog šetnje</button>
+        </form>
+
+        <br>
+        <a href="home.html"><button type="button">Nazad na početnu</button></a>
+    </div>
+
+    <script src="messages.js"></script>
+</body>
+</html>

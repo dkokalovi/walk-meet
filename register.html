@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registracija - walk&meet</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Registracija</h1>
+
+        <form id="registerForm">
+            <input type="text" id="ime" placeholder="Ime" required>
+            <input type="text" id="prezime" placeholder="Prezime" required>
+            <input type="date" id="datumRodjenja" required>
+
+            <select id="spol" required>
+                <option value="">Odaberi spol</option>
+                <option value="Muško">Muško</option>
+                <option value="Žensko">Žensko</option>
+            </select>
+
+            <input type="text" id="grad" placeholder="Grad" required>
+            <input type="text" id="obrazovanje" placeholder="Obrazovanje" required>
+            <input type="text" id="hobi" placeholder="Hobi" required>
+            <input type="text" id="posao" placeholder="Posao" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="text" id="korisnickoIme" placeholder="Korisničko ime" required>
+            <input type="password" id="lozinka" placeholder="Lozinka" required>
+
+            <textarea id="opis" placeholder="Napiši nešto o sebi"></textarea>
+
+            <button type="submit">Registriraj se</button>
+        </form>
+
+        <p><a href="index.html">Nazad</a></p>
+    </div>
+
+    <script src="register.js"></script>
+</body>
+</html>

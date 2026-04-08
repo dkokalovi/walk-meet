@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moj profil</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Moj profil</h1>
+
+        <form id="profileForm">
+            <input type="text" id="ime">
+            <input type="text" id="prezime">
+            <input type="date" id="datumRodjenja">
+
+            <select id="spol">
+                <option value="Muško">Muško</option>
+                <option value="Žensko">Žensko</option>
+            </select>
+
+            <input type="text" id="grad">
+            <input type="text" id="obrazovanje">
+            <input type="text" id="hobi">
+            <input type="text" id="posao">
+            <textarea id="opis"></textarea>
+
+            <button type="submit">Spremi promjene</button>
+        </form>
+
+        <br>
+        <a href="home.html"><button>Nazad</button></a>
+    </div>
+
+    <script src="profile.js"></script>
+</body>
+</html>

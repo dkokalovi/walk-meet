@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Početna - walk&meet</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container home-container">
+        <div class="top-bar">
+    <h1>walk&meet</h1>
+    <div class="top-buttons">
+        <a href="profile.html"><button>Moj profil</button></a>
+        <a href="messages.html"><button id="messagesBtn">Poruke</button></a>
+        <button id="logoutBtn">Odjava</button>
+    </div>
+</div>
+
+<div id="notificationsBox"></div>
+
+<h2>Drugi korisnici</h2>
+
+<select id="filterSpol">
+    <option value="svi">Svi</option>
+    <option value="Muško">Muško</option>
+    <option value="Žensko">Žensko</option>
+</select>
+
+<div id="usersList"></div>
+    </div>
+
+    <script src="home.js"></script>
+</body>
+</html>
