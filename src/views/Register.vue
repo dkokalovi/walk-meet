@@ -18,6 +18,7 @@
       <input v-model="form.email" type="email" placeholder="Email" />
       <input v-model="form.korisnickoIme" placeholder="Korisničko ime" />
       <input v-model="form.lozinka" type="password" placeholder="Lozinka" />
+      <input v-model="form.slikaUrl" placeholder="URL slike profila (opcionalno)" />
       <textarea v-model="form.opis" placeholder="Napiši nešto o sebi"></textarea>
 
       <button type="submit">Registriraj se</button>
@@ -41,7 +42,7 @@ const greska = ref("");
 const form = reactive({
   ime: "", prezime: "", datumRodjenja: "", spol: "",
   grad: "", obrazovanje: "", hobi: "", posao: "",
-  email: "", korisnickoIme: "", lozinka: "", opis: ""
+  email: "", korisnickoIme: "", lozinka: "", opis: "", slikaUrl: ""
 });
 
 async function registriraj() {
@@ -70,6 +71,7 @@ async function registriraj() {
       email: form.email,
       korisnickoIme: form.korisnickoIme,
       opis: form.opis,
+      slikaUrl: form.slikaUrl,
       uid: userCred.user.uid
     });
 

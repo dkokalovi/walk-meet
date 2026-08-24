@@ -3,6 +3,12 @@
     <h1>Profil</h1>
 
     <div v-if="korisnik">
+      <img
+        v-if="korisnik.slikaUrl"
+        :src="korisnik.slikaUrl"
+        alt="profilna slika"
+        style="width:120px; height:120px; border-radius:50%; object-fit:cover; margin-bottom:10px;"
+      />
       <h2>{{ korisnik.ime }} {{ korisnik.prezime }}</h2>
       <p><strong>Grad:</strong> {{ korisnik.grad }}</p>
       <p><strong>Spol:</strong> {{ korisnik.spol }}</p>
@@ -12,7 +18,9 @@
       <p><strong>Hobi:</strong> {{ korisnik.hobi }}</p>
       <p><strong>O meni:</strong> {{ korisnik.opis || "-" }}</p>
 
-      <button @click="posaljiLike">❤️ Like</button>
+      <button @click="posaljiLike" :disabled="vecLajkano">
+        {{ vecLajkano ? "❤️ Lajkano" : "🤍 Like" }}
+      </button>
       <button @click="posaljiPoruku">💬 Pošalji poruku</button>
     </div>
     <p v-else>Korisnik nije pronađen.</p>
@@ -27,44 +35,53 @@ import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { auth, db } from "../firebase";
 import {
-  collection, query, where, getDocs, addDoc, doc, getDoc
+  collection, query, where, getDocs, addDoc
 } from "firebase/firestore";
 
 const route = useRoute();
 const router = useRouter();
 const korisnik = ref(null);
-let mojeKorisnickoIme = "";
+const vecLajkano = ref(false);
 
-onMounted(async () => {
+async function ucitajKorisnika() {
   const username = route.params.username;
+  const snap = await getDocs(
+    query(collection(db, "korisnici"), where("korisnickoIme", "==", username))
+  );
+  if (!snap.empty) {
+    korisnik.value = snap.docs[0].data();
+    await provjeriLike();
+  }
+}
 
-  // Dohvati moje korisničko ime
-  const meSnap = await getDocs(query(collection(db, "korisnici"), where("uid", "==", auth.currentUser.uid)));
-  if (!meSnap.empty) mojeKorisnickoIme = meSnap.docs[0].data().korisnickoIme;
-
-  // Dohvati odabranog korisnika
-  const snap = await getDocs(query(collection(db, "korisnici"), where("korisnickoIme", "==", username)));
-  if (!snap.empty) korisnik.value = snap.docs[0].data();
-});
-
-async function posaljiLike() {
-  const q = query(collection(db, "likeovi"),
-    where("od", "==", mojeKorisnickoIme),
-    where("prema", "==", korisnik.value.korisnickoIme)
+async function provjeriLike() {
+  const mojUid = auth.currentUser.uid;
+  const q = query(
+    collection(db, "likeovi"),
+    where("od", "==", mojUid),
+    where("prema", "==", korisnik.value.uid)
   );
   const snap = await getDocs(q);
-  if (!snap.empty) {
-    alert("Već si poslao/la like ovoj osobi.");
-    return;
-  }
+  vecLajkano.value = !snap.empty;
+}
+
+async function posaljiLike() {
+  if (!korisnik.value || vecLajkano.value) return;
+
+  const mojUid = auth.currentUser.uid;
   await addDoc(collection(db, "likeovi"), {
-    od: mojeKorisnickoIme,
-    prema: korisnik.value.korisnickoIme
+    od: mojUid,
+    prema: korisnik.value.uid
   });
-  alert("Like poslan ❤️");
+
+  vecLajkano.value = true;
 }
 
 function posaljiPoruku() {
-  router.push({ path: "/messages", query: { s: korisnik.value.korisnickoIme } });
+  router.push({ path: "/messages", query: { with: korisnik.value.korisnickoIme } });
 }
+
+onMounted(() => {
+  ucitajKorisnika();
+});
 </script>

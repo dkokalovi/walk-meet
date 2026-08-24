@@ -3,13 +3,13 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDWBxtlP0CepNGsc6uDQ8QVI-Qbewu7rWI",
-  authDomain: "walk-meet.firebaseapp.com",
-  projectId: "walk-meet",
-  storageBucket: "walk-meet.firebasestorage.app",
-  messagingSenderId: "469706699871",
-  appId: "1:469706699871:web:da94b3e36adbf20b1e97ea",
-  measurementId: "G-QSR7X1C7JF"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 const app = initializeApp(firebaseConfig);

@@ -30,6 +30,12 @@
         :key="k.uid"
         class="user-card"
       >
+        <img
+          v-if="k.slikaUrl"
+          :src="k.slikaUrl"
+          alt="profilna slika"
+          style="width:60px; height:60px; border-radius:50%; object-fit:cover;"
+        />
         <h3>{{ k.ime }} {{ k.prezime }}</h3>
         <p><strong>Grad:</strong> {{ k.grad }}</p>
         <p><strong>Hobi:</strong> {{ k.hobi }}</p>

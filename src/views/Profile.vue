@@ -3,6 +3,13 @@
     <h1>Moj profil</h1>
 
     <form v-if="form.ime !== undefined" @submit.prevent="spremi">
+      <img
+        v-if="form.slikaUrl"
+        :src="form.slikaUrl"
+        alt="profilna slika"
+        style="width:100px; height:100px; border-radius:50%; object-fit:cover; margin-bottom:10px;"
+      />
+      <input v-model="form.slikaUrl" placeholder="URL slike profila (opcionalno)" />
       <input v-model="form.ime" placeholder="Ime" />
       <input v-model="form.prezime" placeholder="Prezime" />
       <input v-model="form.datumRodjenja" type="date" />
@@ -47,6 +54,7 @@ async function spremi() {
     hobi: form.hobi,
     posao: form.posao,
     opis: form.opis,
+    slikaUrl: form.slikaUrl || "",
   });
   alert("Profil ažuriran!");
 }
