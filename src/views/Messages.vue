@@ -41,12 +41,31 @@
           class="message-bubble"
           :class="p.od === mojUid ? 'my-message' : 'other-message'"
         >
-          <p style="white-space: pre-line">{{ p.tekst }}</p>
+          <img v-if="p.slikaUrl" :src="p.slikaUrl" alt="slika" class="chat-image" />
+          <p v-if="p.tekst" style="white-space: pre-line">{{ p.tekst }}</p>
         </div>
       </div>
 
-      <input v-model="novaPorukaText" placeholder="Upiši poruku..." />
-      <button @click="posaljiPoruku">Pošalji</button>
+      <div class="chat-input-row">
+        <input v-model="novaPorukaText" placeholder="Upiši poruku..." @keyup.enter="posaljiPoruku" />
+        <div class="emoji-picker-wrapper">
+          <button type="button" @click="emojiOtvoren = !emojiOtvoren">😊</button>
+          <div v-if="emojiOtvoren" class="emoji-picker">
+            <span
+              v-for="e in emojiji"
+              :key="e"
+              class="emoji-option"
+              @click="dodajEmoji(e)"
+            >{{ e }}</span>
+          </div>
+        </div>
+        <button @click="posaljiPoruku">Pošalji</button>
+      </div>
+
+      <div class="chat-image-row">
+        <input v-model="novaSlikaUrl" placeholder="URL slike (opcionalno)..." />
+        <button @click="posaljiSliku" :disabled="!novaSlikaUrl.trim()">Pošalji sliku</button>
+      </div>
 
       <hr>
       <h3>Dogovor za šetnju</h3>
@@ -80,6 +99,9 @@ const poruke = ref([]);
 const razgovori = ref([]);
 const aktivniRazgovor = ref("");
 const novaPorukaText = ref("");
+const novaSlikaUrl = ref("");
+const emojiOtvoren = ref(false);
+const emojiji = ["😀", "😂", "😍", "😉", "👍", "❤️", "🚶", "🎉", "😢", "🤔", "🙌", "🔥"];
 const walk = reactive({ mjesto: "", ruta: "", datum: "", vrijeme: "" });
 
 let unsubPoslane, unsubPrimljene;
@@ -118,8 +140,15 @@ function zadnjaPoruka(uid) {
     (p.od === uid && p.prema === mojUid)
   );
   if (rel.length === 0) return "Nema poruka";
-  const zadnja = rel[rel.length - 1].tekst || "";
-  return zadnja.length > 50 ? zadnja.slice(0, 50) + "..." : zadnja;
+  const zadnja = rel[rel.length - 1];
+  if (zadnja.slikaUrl && !zadnja.tekst) return "📷 Slika";
+  const tekst = zadnja.tekst || "";
+  return tekst.length > 50 ? tekst.slice(0, 50) + "..." : tekst;
+}
+
+function dodajEmoji(e) {
+  novaPorukaText.value += e;
+  emojiOtvoren.value = false;
 }
 
 async function posaljiPoruku() {
@@ -131,6 +160,18 @@ async function posaljiPoruku() {
     createdAt: serverTimestamp()
   });
   novaPorukaText.value = "";
+}
+
+async function posaljiSliku() {
+  if (!aktivniRazgovor.value || !novaSlikaUrl.value.trim()) return;
+  await addDoc(collection(db, "poruke"), {
+    od: mojUid,
+    prema: aktivniRazgovor.value,
+    tekst: "",
+    slikaUrl: novaSlikaUrl.value.trim(),
+    createdAt: serverTimestamp()
+  });
+  novaSlikaUrl.value = "";
 }
 
 async function posaljiSetnuju() {
