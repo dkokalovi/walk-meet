@@ -17,11 +17,30 @@
 
     <h2>Drugi korisnici</h2>
 
-    <select v-model="filterSpol" class="filterSpol">
-      <option value="svi">Svi</option>
-      <option value="Muško">Muško</option>
-      <option value="Žensko">Žensko</option>
-    </select>
+    <div class="filters">
+      <select v-model="filterSpol" class="filterSpol">
+        <option value="svi">Svi</option>
+        <option value="Muško">Muško</option>
+        <option value="Žensko">Žensko</option>
+      </select>
+
+      <select v-model="filterGrad" class="filterGrad">
+        <option value="svi">Svi gradovi</option>
+        <option v-for="grad in dostupniGradovi" :key="grad" :value="grad">{{ grad }}</option>
+      </select>
+
+      <select v-model="filterHobi" class="filterHobi">
+        <option value="svi">Svi hobiji</option>
+        <option v-for="hobi in dostupniHobiji" :key="hobi" :value="hobi">{{ hobi }}</option>
+      </select>
+
+      <div class="filter-dob">
+        <label>Dob od</label>
+        <input v-model.number="dobOd" type="number" min="0" placeholder="npr. 18" />
+        <label>do</label>
+        <input v-model.number="dobDo" type="number" min="0" placeholder="npr. 99" />
+      </div>
+    </div>
 
     <div id="usersList">
       <p v-if="filtriraniKorisnici.length === 0">Nema korisnika za ovaj filter.</p>
@@ -40,6 +59,7 @@
         <p><strong>Grad:</strong> {{ k.grad }}</p>
         <p><strong>Hobi:</strong> {{ k.hobi }}</p>
         <p><strong>Spol:</strong> {{ k.spol }}</p>
+        <p v-if="izracunajDob(k.datumRodjenja) !== null"><strong>Dob:</strong> {{ izracunajDob(k.datumRodjenja) }}</p>
         <button @click="pogledajProfil(k.korisnickoIme)">Pogledaj profil</button>
       </div>
     </div>
@@ -56,12 +76,46 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const sviKorisnici = ref([]);
 const filterSpol = ref("svi");
+const filterGrad = ref("svi");
+const filterHobi = ref("svi");
+const dobOd = ref(null);
+const dobDo = ref(null);
 const notif = ref({ likeovi: null, poruke: null });
+
+function izracunajDob(datumRodjenja) {
+  if (!datumRodjenja) return null;
+  const rodjen = new Date(datumRodjenja);
+  if (isNaN(rodjen.getTime())) return null;
+  const danas = new Date();
+  let dob = danas.getFullYear() - rodjen.getFullYear();
+  const josNijeBioRodjendan =
+    danas.getMonth() < rodjen.getMonth() ||
+    (danas.getMonth() === rodjen.getMonth() && danas.getDate() < rodjen.getDate());
+  if (josNijeBioRodjendan) dob--;
+  return dob;
+}
+
+const dostupniGradovi = computed(() => {
+  const skup = new Set(sviKorisnici.value.map(k => k.grad).filter(Boolean));
+  return [...skup].sort();
+});
+
+const dostupniHobiji = computed(() => {
+  const skup = new Set(sviKorisnici.value.map(k => k.hobi).filter(Boolean));
+  return [...skup].sort();
+});
 
 const filtriraniKorisnici = computed(() => {
   return sviKorisnici.value.filter(k => {
     if (k.uid === auth.currentUser.uid) return false;
     if (filterSpol.value !== "svi" && k.spol !== filterSpol.value) return false;
+    if (filterGrad.value !== "svi" && k.grad !== filterGrad.value) return false;
+    if (filterHobi.value !== "svi" && k.hobi !== filterHobi.value) return false;
+
+    const dob = izracunajDob(k.datumRodjenja);
+    if (dobOd.value !== null && dobOd.value !== "" && (dob === null || dob < dobOd.value)) return false;
+    if (dobDo.value !== null && dobDo.value !== "" && (dob === null || dob > dobDo.value)) return false;
+
     return true;
   });
 });
