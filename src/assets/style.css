@@ -1,35 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #e8f5e9, #f1f8e9);
+    font-family: 'Poppins', Arial, sans-serif;
+    background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 50%, #e0f2f1 100%);
+    background-attachment: fixed;
     margin: 0;
     padding: 0;
+    color: #2c2c2c;
 }
 
 /* GLAVNI KONTEJNER */
 .container {
-    width: 350px;
+    width: 380px;
     margin: 50px auto;
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.97);
+    padding: 34px;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(46, 125, 50, 0.15);
     text-align: center;
 }
 
 /* VEĆI KONTEJNERI */
 .home-container,
 .messages-container {
-    width: 700px;
+    width: 760px;
 }
 
 /* NASLOVI */
 h1 {
     color: #2e7d32;
     margin-bottom: 20px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 h2 {
     color: #388e3c;
+    font-weight: 600;
+    text-align: left;
+}
+
+h3 {
+    font-weight: 600;
 }
 
 /* INPUTI */
@@ -37,29 +53,67 @@ input,
 select,
 textarea {
     width: 100%;
-    padding: 10px;
+    padding: 11px 14px;
     margin: 8px 0;
-    border-radius: 8px;
-    border: 1px solid #ccc;
+    border-radius: 10px;
+    border: 1.5px solid #dcedc8;
     box-sizing: border-box;
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: #fafffa;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #66bb6a;
+    box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.15);
+    background: white;
+}
+
+textarea {
+    min-height: 70px;
+    resize: vertical;
 }
 
 /* GUMBI */
 button {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
+    padding: 11px 16px;
+    margin: 8px 0;
     border: none;
-    border-radius: 8px;
-    background: #43a047;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #4caf50, #43a047);
     color: white;
     cursor: pointer;
-    font-weight: bold;
-    transition: 0.2s;
+    font-weight: 600;
+    font-family: inherit;
+    font-size: 14px;
+    transition: transform 0.12s, box-shadow 0.12s, background 0.2s;
+    box-shadow: 0 3px 8px rgba(67, 160, 71, 0.25);
 }
 
 button:hover {
-    background: #2e7d32;
+    background: linear-gradient(135deg, #43a047, #2e7d32);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 12px rgba(67, 160, 71, 0.35);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+button:disabled {
+    background: #c8c8c8;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+.container > form > button,
+.container > button {
+    width: 100%;
 }
 
 /* TOP BAR */
@@ -67,7 +121,9 @@ button:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .top-buttons {
@@ -77,19 +133,82 @@ button:hover {
 
 .top-buttons button {
     width: auto;
+    margin: 0;
+}
+
+/* FILTERI (Home.vue) */
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    background: #f1f8e9;
+    border: 1px solid #c5e1a5;
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 22px;
+}
+
+.filters select {
+    width: auto;
+    min-width: 140px;
+    margin: 0;
+}
+
+.filter-dob {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #4e6b4f;
+}
+
+.filter-dob input {
+    width: 70px;
+    margin: 0;
+    padding: 9px 10px;
 }
 
 /* KARTICE KORISNIKA */
+#usersList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+}
+
 .user-card {
-    background: #f1f8e9;
-    padding: 15px;
-    border-radius: 12px;
-    border: 1px solid #c5e1a5;
+    background: #f8fdf6;
+    padding: 18px;
+    border-radius: 14px;
+    border: 1px solid #dcedc8;
     text-align: left;
+    transition: transform 0.15s, box-shadow 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.user-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(46, 125, 50, 0.15);
+    border-color: #aed581;
+}
+
+.user-card img {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    margin-bottom: 4px;
+}
+
+.user-card h3 {
+    margin: 4px 0;
+    color: #2e7d32;
+}
+
+.user-card button {
+    margin-top: 10px;
 }
 
 /* LISTE */
-#usersList,
 #likesNotifications {
     display: flex;
     flex-direction: column;
@@ -102,66 +221,185 @@ button:hover {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    max-height: 380px;
+    overflow-y: auto;
+    padding: 6px;
 }
 
 .message-bubble {
     max-width: 70%;
     padding: 10px 14px;
-    border-radius: 12px;
+    border-radius: 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
 
 .my-message {
-    background: #c8e6c9;
+    background: linear-gradient(135deg, #c8e6c9, #b2dfb4);
     align-self: flex-end;
+    border-bottom-right-radius: 4px;
 }
 
 .other-message {
-    background: #eeeeee;
+    background: #f0f0f0;
     align-self: flex-start;
+    border-bottom-left-radius: 4px;
 }
 
-/* FILTER */
-#filterSpol {
-    margin-bottom: 20px;
-    padding: 8px;
-    border-radius: 6px;
+.chat-image {
+    max-width: 100%;
+    border-radius: 10px;
+    display: block;
+    margin-bottom: 4px;
 }
-.conversation-card {
+
+.chat-input-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.chat-input-row input {
+    margin: 0;
+    flex: 1;
+}
+
+.chat-input-row button {
+    margin: 0;
+    width: auto;
+    white-space: nowrap;
+}
+
+.emoji-picker-wrapper {
+    position: relative;
+}
+
+.emoji-picker-wrapper button {
+    padding: 10px 12px;
     background: #f1f8e9;
-    padding: 14px;
+    box-shadow: none;
+}
+
+.emoji-picker-wrapper button:hover {
+    background: #dcedc8;
+    transform: none;
+}
+
+.emoji-picker {
+    position: absolute;
+    bottom: 46px;
+    right: 0;
+    background: white;
+    border: 1px solid #dcedc8;
     border-radius: 12px;
-    border: 1px solid #c5e1a5;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    z-index: 10;
+    width: 160px;
+}
+
+.emoji-option {
+    font-size: 20px;
+    cursor: pointer;
+    text-align: center;
+    padding: 4px;
+    border-radius: 6px;
+    transition: background 0.15s;
+}
+
+.emoji-option:hover {
+    background: #f1f8e9;
+}
+
+.chat-image-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.chat-image-row input {
+    margin: 0;
+    flex: 1;
+}
+
+.chat-image-row button {
+    margin: 0;
+    width: auto;
+    white-space: nowrap;
+}
+
+/* RAZGOVORI */
+.conversation-card {
+    background: #f8fdf6;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid #dcedc8;
     text-align: left;
     cursor: pointer;
     margin-bottom: 12px;
-    transition: 0.2s;
+    transition: 0.15s;
 }
 
 .conversation-card:hover {
-    background: #e8f5e9;
+    background: #eef8ec;
+    transform: translateX(2px);
 }
 
 .active-conversation {
     border: 2px solid #43a047;
+    background: #e8f5e9;
 }
 
 .conversation-card h3 {
     margin: 0 0 6px 0;
+    color: #2e7d32;
 }
 
 .conversation-card p {
     margin: 0;
-    color: #555;
+    color: #666;
+    font-size: 13px;
 }
+
+/* NOTIFIKACIJE */
 .notification-summary {
-    background: #f1f8e9;
+    background: linear-gradient(135deg, #f1f8e9, #e8f5e9);
     border: 1px solid #c5e1a5;
     border-radius: 12px;
-    padding: 14px;
+    padding: 16px;
     margin-bottom: 20px;
     text-align: left;
+    display: flex;
+    gap: 24px;
 }
 
 .notification-summary p {
-    margin: 6px 0;
+    margin: 0;
+    font-size: 14px;
+}
+
+/* RESPONZIVNOST */
+@media (max-width: 800px) {
+    .home-container,
+    .messages-container {
+        width: 92%;
+    }
+
+    #usersList {
+        grid-template-columns: 1fr;
+    }
+
+    .filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 420px) {
+    .container {
+        width: 92%;
+        padding: 22px;
+    }
 }
